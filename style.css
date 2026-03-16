@@ -1,0 +1,364 @@
+# Branding images
+.cw-jerrycan {
+    height: 2.5em;
+    width: auto;
+    vertical-align: middle;
+    display: inline-block;
+}
+.cw-logo {
+    height: 2.2em;
+    width: auto;
+    margin-bottom: 0.5em;
+    display: block;
+}
+
+#splash-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7em;
+    margin-bottom: 0.5em;
+}
+
+.game-logo-row {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+# Responsive adjustments for small screens
+
+@media (max-width: 600px) {
+        .cw-jerrycan {
+            height: 2em;
+        }
+        .cw-logo {
+            height: 1.7em;
+            margin-bottom: 0.3em;
+        }
+        #splash-title-row {
+            gap: 0.4em;
+            margin-bottom: 0.3em;
+        }
+    html, body {
+        min-height: 100vh;
+        height: 100vh;
+        padding: 0;
+        margin: 0;
+        font-size: 15px;
+        width: 100vw;
+        box-sizing: border-box;
+    }
+    #game-ui {
+        min-height: 100vh;
+        height: 100vh;
+        width: 100vw;
+        padding: 0;
+        gap: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: stretch;
+    }
+    #main-row {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: stretch;
+        gap: 0;
+        width: 100vw;
+        max-width: 100vw;
+        height: 100%;
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+    #side-right {
+        width: 100vw;
+        min-width: unset;
+        margin: 0;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 0.7em;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+        order: -1;
+        display: flex;
+        flex-shrink: 0;
+        max-height: 56px;
+    }
+    #side-left {
+        align-items: center;
+        width: 100vw;
+        min-width: unset;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+    #top-bar {
+        width: 95vw;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5em;
+        margin: 0.3em 0 0.3em 0;
+        display: flex;
+    }
+    #game-area {
+        width: 100vw;
+        height: 60vw;
+        max-width: 100vw;
+        max-height: 60vw;
+        min-width: 180px;
+        min-height: 180px;
+        margin: 0;
+        border-radius: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 1;
+    }
+    #game-canvas {
+        width: 100vw !important;
+        height: 60vw !important;
+        max-width: 100vw;
+        max-height: 60vw;
+        min-width: 180px;
+        min-height: 180px;
+        display: block;
+        flex-shrink: 1;
+    }
+    #edu-popup {
+        max-width: 95vw;
+        font-size: 0.98em;
+        min-height: 36px;
+        margin-top: 0.7em;
+        padding: 0.5em 0.7em;
+        word-break: break-word;
+        white-space: normal;
+        overflow-wrap: break-word;
+        color: #111;
+        background: #fff;
+        border: 2px solid #ffd600;
+    }
+    #start-btn {
+        font-size: 1em;
+        padding: 0.6em 1.2em;
+        width: 90vw;
+        max-width: 90vw;
+        min-width: 120px;
+        height: auto;
+        max-height: 50px;
+        margin-top: 1em;
+    }
+    #splash-screen.overlay {
+        padding: 0.5em 0.2em;
+        font-size: 1em;
+        min-width: 0;
+        width: 100vw;
+        min-height: 100vh;
+        box-sizing: border-box;
+    }
+    .mission {
+        font-size: 1em;
+        margin-bottom: 0.7em;
+    }
+    #level-info {
+        font-size: 1em;
+        margin-bottom: 0.7em;
+    }
+    #pause-btn, #restart-btn {
+        font-size: 0.95em;
+        padding: 0.4em 0.7em;
+        min-width: 60px;
+        max-width: 32vw;
+        flex-shrink: 1;
+    }
+}
+#edu-popup {
+    margin-top: 2em;
+    min-height: 48px;
+    max-width: 220px;
+    color: #111;
+    background: #fff;
+    border-radius: 8px;
+    border: 2px solid #ffd600;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 0.7em 1em;
+    font-size: 1em;
+    text-align: left;
+    display: none;
+    transition: opacity 0.4s;
+}
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #fff;
+    color: #111;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#game-ui {
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+}
+
+#main-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100vw;
+    max-width: 100vw;
+    gap: 2vw;
+}
+
+#side-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+#side-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    margin-left: 2vw;
+    margin-top: 0.5em;
+    gap: 1em;
+    min-width: 120px;
+}
+
+#scoreboard {
+    width: 400px;
+    margin: 0 auto 0.5em auto;
+    background: #fff;
+    border-radius: 8px;
+    border: 2px solid #ffd600;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 0.5em 1em;
+    font-size: 0.98em;
+    color: #111;
+    text-align: center;
+}
+
+#top-bar {
+    width: 400px;
+    display: flex;
+    align-items: center;
+    margin: 0.5em 0 0.5em 0;
+    justify-content: flex-start;
+    gap: 1.5em;
+}
+
+#pause-btn, #restart-btn {
+    margin: 0;
+    outline: none;
+    background: #0077c8;
+    color: #fff;
+    border: 2px solid #ffd600;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+}
+
+#pause-btn:hover, #restart-btn:hover {
+    background: #ffd600;
+    color: #111;
+}
+
+#game-area {
+    width: 400px;
+    height: 600px;
+    background: #f4f4f4;
+    border-radius: 16px;
+    border: 2px solid #ffd600;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.splash-flex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100vw;
+    background: #ffd600;
+    color: #111;
+    text-align: center;
+    padding: 0 1em;
+    box-sizing: border-box;
+}
+.mission {
+    font-size: 1.2em;
+    margin-bottom: 1em;
+    color: #0077c8;
+}
+#level-info {
+    font-size: 1.1em;
+    margin-bottom: 1.2em;
+    color: #0077c8;
+    font-weight: bold;
+}
+#start-btn {
+    padding: 0.7em 2em;
+    font-size: 1.1em;
+    border: none;
+    max-width: 95vw;
+    max-height: 70vh;
+    border-radius: 8px;
+    background: #ffd600;
+    color: #111;
+    cursor: pointer;
+    margin-top: 1em;
+    transition: background 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+#start-btn:hover {
+    background: #0077c8;
+    color: #fff;
+}
+#health-label {
+	margin-right: 0.5em;
+}
+#health-bar {
+	width: 120px;
+	height: 18px;
+    background: #f4f4f4;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid #ffd600;
+}
+#health-fill {
+	height: 100%;
+	width: 100%;
+        max-width: 100%;
+        max-height: 100%;
+    background: linear-gradient(90deg, #0077c8, #ffd600 60%, #111 100%);
+	transition: width 0.3s, background 0.3s;
+}
+#message {
+	font-size: 1.1em;
+	margin-bottom: 0.5em;
+    color: #0077c8;
+}

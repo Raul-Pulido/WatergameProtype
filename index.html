@@ -1,0 +1,72 @@
+	<!-- Challenge Mode Popup -->
+	<div id="challenge-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(229,57,53,0.92); color:#fff; z-index:1000; display:flex; align-items:center; justify-content:center; flex-direction:column; text-align:center;">
+		<div style="background:rgba(0,0,0,0.15); padding:2em 2em 1.5em 2em; border-radius:16px; max-width:90vw;">
+			<div id="challenge-reason" style="font-size:1.2em; margin-bottom:1.2em;"></div>
+			<button id="challenge-continue-btn" style="padding:0.7em 2em; font-size:1.1em; border:none; border-radius:8px; background:#ffd600; color:#111; cursor:pointer; transition:background 0.2s;">Continue</button>
+		</div>
+	</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Drop Defender: Protect the Flow</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<!-- Splash Screen -->
+	<div id="splash-screen" class="splash-flex">
+		<div id="splash-title-row">
+			<img src="jerrycan.png" alt="charity: water jerry can" class="cw-jerrycan">
+			<h1 style="font-size:2.5em; margin:0; display:inline-block; vertical-align:middle;">Drop Defender: Protect the Flow</h1>
+		</div>
+		<p class="mission" style="font-size:1.2em; margin-bottom:1em;">Protect clean water. Stop contamination. Help communities thrive.</p>
+		<div id="level-info" style="font-size:1.1em; margin-bottom:1.2em; color:#ffd600; font-weight:bold;">Level 1: Light contamination</div>
+		<div style="display:flex; flex-direction:row; gap:1em; justify-content:center; margin-top:1em;">
+			<button id="start-btn" style="padding:0.7em 2em; font-size:1.1em; border:none; border-radius:8px; background:#00bcd4; color:#fff; cursor:pointer; transition:background 0.2s;">Start Game</button>
+		</div>
+		<div style="margin-top:2em; font-size:0.95em; color:#e0f7fa; opacity:0.7;">A game by Raul Pulido</div>
+	</div>
+
+	<!-- Game UI -->
+	<div id="game-ui" style="display:none;">
+		<div id="main-row">
+			<div id="side-right">
+				<button id="pause-btn" style="padding:0.7em 1.5em; font-size:1.1em; border:none; border-radius:8px; background:#ffd600; color:#333; cursor:pointer; font-weight:bold; box-shadow:0 2px 8px rgba(0,0,0,0.07); margin-bottom:1em;">Pause</button>
+				<button id="restart-btn" style="padding:0.7em 1.5em; font-size:1.1em; border:none; border-radius:8px; background:#00bcd4; color:#fff; cursor:pointer; font-weight:bold; box-shadow:0 2px 8px rgba(0,0,0,0.07);">Restart</button>
+				<button id="challenge-btn" style="padding:0.7em 1.5em; font-size:1.1em; border:none; border-radius:8px; background:#e53935; color:#fff; cursor:pointer; font-weight:bold; box-shadow:0 2px 8px rgba(0,0,0,0.07);">Challenge</button>
+				<div id="edu-popup" style="margin-top:2em; min-height:48px; max-width:220px; color:#1565c0; background:#e0f7fa; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.07); padding:0.7em 1em; font-size:1em; text-align:left; display:none;"></div>
+			</div>
+			<div id="side-left">
+				<div id="top-bar">
+					<div id="score">Score: 0</div>
+					<div id="village-health">
+						<span id="health-label">Village Health:</span>
+						<div id="health-bar"><div id="health-fill"></div></div>
+					</div>
+				</div>
+				<div id="message" style="font-size:1.1em; margin-bottom:0.5em; color:#1565c0;">Let clean water through. Stop contaminants.</div>
+				<div class="game-logo-row">
+					<img src="logo.png" alt="charity: water logo" class="cw-logo">
+					<div id="game-area" style="position:relative;">
+						<canvas id="game-canvas" width="400" height="600"></canvas>
+						<!-- The green bar and cannon are drawn in the canvas -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- End Screen -->
+	<div id="end-screen" class="overlay" style="display:none;">
+		<h2 id="end-title"></h2>
+		<div id="final-score"></div>
+		<div id="water-protected"></div>
+		<div id="edu-message"></div>
+		<button id="play-again-btn">Play Again</button>
+		<p class="learn-more">Learn more at <a href="https://charitywater.org" target="_blank">charitywater.org</a></p>
+	</div>
+
+	<script src="script.js"></script>
+</body>
+</html>
