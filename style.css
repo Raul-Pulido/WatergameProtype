@@ -197,7 +197,9 @@
         flex-shrink: 1;
     }
 }
-/* Duplicate selector removed below, keep only one definition for #edu-popup */
+
+/* Only one definition for #edu-popup below (desktop, non-media-query) */
+#edu-popup {
     margin-top: 2em;
     min-height: 48px;
     max-width: 220px;

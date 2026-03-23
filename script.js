@@ -180,18 +180,23 @@ if (restartBtn) {
 
 // --- Milestone Toast Logic ---
 const milestoneToast = document.getElementById('milestone-toast');
-const milestoneMessages = [
-    'Great job! 50 points!',
-    'Amazing! 100 points!',
-    'Incredible! 150 points!',
-    'Unstoppable! 200 points!',
-    'Legendary! 250 points!',
-    'Water Hero! 300 points!',
-    'Clean Water Champion! 350 points!',
-    'Guardian of the Flow! 400 points!',
-    'Ultimate Defender! 450 points!',
-    'Water Warrior! 500 points!'
-];
+// Milestone messages for specific scores
+const milestoneMessages = {
+    5: 'Great start! 5 points!',
+    10: 'Halfway there! 10 points!',
+    25: 'Keep going! 25 points!',
+    50: 'Great job! 50 points!',
+    75: 'Impressive! 75 points!',
+    100: 'Amazing! 100 points!',
+    150: 'Incredible! 150 points!',
+    200: 'Unstoppable! 200 points!',
+    250: 'Legendary! 250 points!',
+    300: 'Water Hero! 300 points!',
+    350: 'Clean Water Champion! 350 points!',
+    400: 'Guardian of the Flow! 400 points!',
+    450: 'Ultimate Defender! 450 points!',
+    500: 'Water Warrior! 500 points!'
+};
 let lastMilestone = 0;
 let milestoneToastTimer = null;
 
@@ -375,13 +380,8 @@ function updateUI() {
     else healthFill.style.background = '#e53935';
 
     // --- Milestone Toast Trigger ---
-    if (score > 0 && score % 50 === 0 && score !== lastMilestone) {
-        let idx = Math.floor(score / 50) - 1;
-        if (idx >= 0 && idx < milestoneMessages.length) {
-            showMilestoneToast(milestoneMessages[idx]);
-        } else {
-            showMilestoneToast('Milestone reached!');
-        }
+    if (score > 0 && milestoneMessages[score] && score !== lastMilestone) {
+        showMilestoneToast(milestoneMessages[score]);
         lastMilestone = score;
     }
 }
