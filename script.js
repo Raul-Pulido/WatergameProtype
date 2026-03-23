@@ -1,34 +1,111 @@
-// --- Challenge Mode State ---
-let challengeMode = false;
-const CHALLENGE_REASONS = [
-    'Industrial waste has leaked into the river.',
-    'Agricultural runoff is contaminating the water.',
-    'A broken sewage pipe is polluting the supply.',
-    'Heavy rains have caused flooding and contamination.',
-    'Improper waste disposal is affecting the water.',
-    'Mining operations are releasing toxins.'
-];
-const challengeBtn = document.getElementById('challenge-btn');
-const challengeModal = document.getElementById('challenge-modal');
-const challengeReason = document.getElementById('challenge-reason');
-const challengeContinueBtn = document.getElementById('challenge-continue-btn');
-
-if (challengeBtn) {
-    challengeBtn.onclick = function() {
-        challengeMode = true;
-        // Show modal with random reason
-        if (challengeModal && challengeReason) {
-            challengeReason.textContent = pick(CHALLENGE_REASONS);
-            challengeModal.style.display = 'flex';
+// --- Difficulty Mode Only ---
+// --- Difficulty Dropdown Logic ---
+const chooseDifficultyBtn = document.getElementById('choose-difficulty-btn');
+const difficultyDropdown = document.getElementById('difficulty-dropdown');
+const difficultyOptions = document.getElementsByClassName('difficulty-option');
+let selectedDifficulty = null;
+const difficultySettings = {
+    easy: {
+        color: '#ffd600',
+        textColor: '#1565c0',
+        contaminantTarget: 11,
+        contaminantRate: 0.35
+    },
+    medium: {
+        color: '#00bcd4',
+        textColor: '#fff',
+        contaminantTarget: 21,
+        contaminantRate: 0.55
+    },
+    hard: {
+        color: '#1565c0',
+        textColor: '#fff',
+        contaminantTarget: 41,
+        contaminantRate: 0.75
+    }
+};
+if (chooseDifficultyBtn && difficultyDropdown) {
+    chooseDifficultyBtn.onclick = function(e) {
+        e.stopPropagation();
+        if (difficultyDropdown.classList.contains('show')) {
+            difficultyDropdown.classList.remove('show');
+            setTimeout(() => {
+                difficultyDropdown.style.display = 'none';
+            }, 300); // Match the CSS transition duration
+        } else {
+            difficultyDropdown.style.display = 'block';
+            // Trigger reflow to enable animation
+            difficultyDropdown.offsetHeight;
+            difficultyDropdown.classList.add('show');
         }
     };
+    document.addEventListener('click', function() {
+        if (difficultyDropdown.classList.contains('show')) {
+            difficultyDropdown.classList.remove('show');
+            setTimeout(() => {
+                difficultyDropdown.style.display = 'none';
+            }, 300);
+        }
+    });
 }
-if (challengeContinueBtn) {
-    challengeContinueBtn.onclick = function() {
-        if (challengeModal) challengeModal.style.display = 'none';
-        startGame();
+for (let btn of difficultyOptions) {
+    btn.onclick = function(e) {
+        e.stopPropagation();
+        let diff = btn.getAttribute('data-difficulty');
+        selectedDifficulty = diff;
+        // Animate closing
+        difficultyDropdown.classList.remove('show');
+        setTimeout(() => {
+            difficultyDropdown.style.display = 'none';
+            setDifficulty(selectedDifficulty);
+            startGame();
+        }, 300); // Wait for animation to complete before starting game
     };
 }
+
+function setDifficulty(diff) {
+    contaminantShots = 0;
+    score = 0;
+    health = INITIAL_HEALTH;
+    waterProtected = 0;
+    objects = [];
+    projectiles = [];
+    player.x = GAME_WIDTH/2 - PLAYER_WIDTH/2;
+    player.y = GAME_HEIGHT - GROUND_HEIGHT - PLAYER_HEIGHT/2;
+    player.aimAngle = -Math.PI/2;
+    currentLevel = 0;
+    gameRunning = false;
+    gameOver = false;
+    pollutionWave = false;
+    pollutionWaveTimer = 0;
+    lastObjectTime = 0;
+    objectInterval = 900;
+    splashScreen.style.display = 'none';
+    endScreen.style.display = 'none';
+    gameUI.style.display = 'flex';
+    // Show all UI elements
+    document.getElementById('top-bar').style.display = 'flex';
+    document.getElementById('message').style.display = 'block';
+    message.textContent = 'Let clean water through. Stop contaminants.';
+    updateUI();
+    if (!canvas) {
+        canvas = document.getElementById('game-canvas');
+        ctx = canvas.getContext('2d');
+        setupInput();
+    }
+    ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+    createObject();
+    animationFrameId = requestAnimationFrame(gameLoop);
+    if (eduPopup) eduPopup.style.display = 'none';
+    // Set contaminant target and rate
+    contaminantTarget = difficultySettings[diff].contaminantTarget;
+    customContaminantRate = difficultySettings[diff].contaminantRate;
+    difficultyMode = true;
+}
+
+let contaminantTarget = 0;
+let customContaminantRate = 0.35;
+let difficultyMode = false;
 // --- Game Constants ---
 const GAME_WIDTH = 400;
 const GAME_HEIGHT = 600;
@@ -87,6 +164,8 @@ const playAgainBtn = document.getElementById('play-again-btn');
 const pauseBtn = document.getElementById('pause-btn');
 const restartBtn = document.getElementById('restart-btn');
 const eduPopup = document.getElementById('edu-popup');
+const redoBtn = document.getElementById('redo-btn');
+// No challenge mode elements or logic
 // --- Restart Button Logic ---
 if (restartBtn) {
     restartBtn.onclick = function() {
@@ -94,10 +173,6 @@ if (restartBtn) {
         if (gameUI.style.display !== 'flex') return;
         paused = false;
         pauseBtn.textContent = 'Pause';
-        if (challengeMode) {
-            challengeMode = false;
-            document.body.style.background = '';
-        }
         startGame();
     };
 }
@@ -108,8 +183,6 @@ function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
 // --- Splash Screen ---
 function showSplash() {
-    // Always reset challenge modal and background before showing splash
-    if (challengeModal) challengeModal.style.display = 'none';
     document.body.style.background = '';
     splashScreen.style.display = 'flex';
     gameUI.style.display = 'none';
@@ -117,7 +190,8 @@ function showSplash() {
     levelInfo.textContent = LEVELS[currentLevel].name;
     // Reset cannon angle
     player.aimAngle = -Math.PI/2;
-    challengeMode = false;
+    // Reset timer
+    if (redoBtn) redoBtn.style.display = 'none';
 }
 
 // --- Start Game ---
@@ -149,15 +223,12 @@ function startGame() {
     pollutionWave = false;
     pollutionWaveTimer = 0;
     lastObjectTime = 0;
-    objectInterval = challengeMode ? 600 : 900;
+    objectInterval = 900;
     splashScreen.style.display = 'none';
     endScreen.style.display = 'none';
     gameUI.style.display = 'flex';
-    if (challengeMode) {
-        document.body.style.background = '#e53935';
-    } else {
-        document.body.style.background = '';
-    }
+    // Always clear any red background
+    document.body.style.background = '';
     // Show all UI elements
     document.getElementById('top-bar').style.display = 'flex';
     document.getElementById('message').style.display = 'block';
@@ -177,6 +248,7 @@ function startGame() {
     if (eduPopup) {
         eduPopup.style.display = 'none';
     }
+    // Start 30 second timer
 }
 
 function showEduPopup() {
@@ -210,12 +282,35 @@ function endGame(win) {
     if (eduPopup) eduPopup.style.display = 'none';
     gameUI.style.display = 'none';
     endScreen.style.display = 'flex';
-    if (win) {
+    if (win === true) {
         endTitle.textContent = 'Community Thriving!';
         eduMessage.textContent = pick(FACTS);
-    } else {
+        if (redoBtn) redoBtn.style.display = 'none';
+    } else if (win === false) {
         endTitle.textContent = 'Water supply contaminated.';
         eduMessage.textContent = 'Unsafe water causes preventable diseases worldwide.';
+        if (redoBtn) redoBtn.style.display = 'none';
+    } else if (win === 'difficulty-win') {
+        // Congratulate the player and mention the difficulty and target
+        let diffName = 'this difficulty';
+        let target = contaminantTarget;
+        if (selectedDifficulty && difficultySettings[selectedDifficulty]) {
+            diffName = selectedDifficulty.charAt(0).toUpperCase() + selectedDifficulty.slice(1);
+            target = difficultySettings[selectedDifficulty].contaminantTarget;
+        }
+        endTitle.textContent = 'Congratulations!';
+        eduMessage.textContent = `You beat the game on ${diffName} mode!\nYou destroyed all ${target} contaminants. The village is safe and thriving!`;
+        if (redoBtn) redoBtn.style.display = 'none';
+    } else if (win === 'difficulty-lose') {
+        let diffName = 'this difficulty';
+        let target = contaminantTarget;
+        if (selectedDifficulty && difficultySettings[selectedDifficulty]) {
+            diffName = selectedDifficulty.charAt(0).toUpperCase() + selectedDifficulty.slice(1);
+            target = difficultySettings[selectedDifficulty].contaminantTarget;
+        }
+        endTitle.textContent = 'Almost there!';
+        eduMessage.textContent = `You destroyed all ${target} contaminants on ${diffName} mode, but the village health fell below 75%. Try again!`;
+        if (redoBtn) redoBtn.style.display = 'none';
     }
     finalScore.textContent = 'Final Score: ' + score;
     waterProtectedDisplay.textContent = `You protected ${waterProtected} liters of water.`;
@@ -234,7 +329,7 @@ function updateUI() {
 // --- Object Types ---
 function createObject() {
     let level = LEVELS[currentLevel];
-    let contaminantRate = challengeMode ? Math.min(1, level.contaminantRate + 0.35) : level.contaminantRate;
+    let contaminantRate = difficultyMode ? customContaminantRate : level.contaminantRate;
     let isContaminant = Math.random() < contaminantRate;
     let isClean = !isContaminant;
     if (level.drought && isClean && Math.random() < 0.5) return; // Fewer clean drops in drought
@@ -401,6 +496,18 @@ function handleCollisions() {
                     score += 10;
                     obj.glow = true;
                     setTimeout(()=>{obj.glow=false;}, 200);
+                    // Check for difficulty win condition
+                    if (difficultyMode && contaminantShots >= contaminantTarget) {
+                        // End game with win/lose based on health
+                        setTimeout(() => {
+                            if (health >= 75) {
+                                endGame('difficulty-win');
+                            } else {
+                                endGame('difficulty-lose');
+                            }
+                        }, 300);
+                        return;
+                    }
                 } else {
                     score -= 10;
                     health -= 7;
@@ -515,11 +622,49 @@ function showFactPopup() {
 }
 
 // --- Button Events ---
-startBtn.onclick = startGame;
-playAgainBtn.onclick = () => {
-    currentLevel = 0;
-    showSplash();
-};
-
-// --- Initialize ---
-showSplash();
+if (startBtn) startBtn.onclick = startGame;
+if (playAgainBtn) {
+    playAgainBtn.onclick = () => {
+        // Reset all game state
+        gameRunning = false;
+        gameOver = false;
+        paused = false;
+        currentLevel = 0;
+        score = 0;
+        health = INITIAL_HEALTH;
+        waterProtected = 0;
+        contaminantShots = 0;
+        objects = [];
+        projectiles = [];
+        pollutionWave = false;
+        pollutionWaveTimer = 0;
+        lastObjectTime = 0;
+        objectInterval = 900;
+        selectedDifficulty = null;
+        difficultyMode = false;
+        contaminantTarget = 0;
+        
+        // Reset player position and angle
+        player.x = GAME_WIDTH/2 - PLAYER_WIDTH/2;
+        player.y = GAME_HEIGHT - GROUND_HEIGHT - PLAYER_HEIGHT/2;
+        player.aimAngle = -Math.PI/2;
+        
+        // Cancel any running animation
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+        }
+        
+        // Clear any timers
+        if (eduPopupTimer) {
+            clearTimeout(eduPopupTimer);
+            eduPopupTimer = null;
+        }
+        
+        // Reset pause button
+        if (pauseBtn) pauseBtn.textContent = 'Pause';
+        
+        // Show splash screen
+        showSplash();
+    };
+}

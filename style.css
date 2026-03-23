@@ -192,9 +192,10 @@
     display: none;
     transition: opacity 0.4s;
 }
+
 body {
     margin: 0;
-    font-family: 'Segoe UI', Arial, sans-serif;
+    font-family: 'Proxima Nova', 'Segoe UI', Arial, sans-serif;
     background: #fff;
     color: #111;
     min-height: 100vh;
@@ -202,6 +203,11 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+h1, h2, h3, #main-footer, #choose-difficulty-btn, .difficulty-option, #pause-btn, #restart-btn, #play-again-btn, .mission, #level-info, #score, #final-score, #water-protected, #edu-message, #health-label, #end-title, .learn-more, #splash-title-row, .cw-jerrycan, .cw-logo {
+    font-family: 'Proxima Nova', 'Segoe UI', Arial, sans-serif !important;
+    letter-spacing: 0.01em;
 }
 
 #game-ui {
@@ -338,6 +344,79 @@ body {
     background: #0077c8;
     color: #fff;
 }
+
+/* Difficulty Dropdown Styles */
+#choose-difficulty-btn {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+#choose-difficulty-btn:hover {
+    background: #0097e6 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,188,212,0.3);
+}
+
+#choose-difficulty-btn:active {
+    transform: translateY(0);
+}
+
+#difficulty-dropdown {
+    display: none;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#difficulty-dropdown.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.difficulty-option {
+    transition: all 0.2s ease;
+    transform: scale(1);
+}
+
+.difficulty-option:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+    padding-left: 2em !important;
+}
+
+.difficulty-option:active {
+    transform: scale(0.98);
+}
+
+/* Staggered animation for difficulty options */
+.difficulty-option:nth-child(1) {
+    animation: slideInOption 0.3s ease forwards;
+    animation-delay: 0.05s;
+}
+
+.difficulty-option:nth-child(2) {
+    animation: slideInOption 0.3s ease forwards;
+    animation-delay: 0.1s;
+}
+
+.difficulty-option:nth-child(3) {
+    animation: slideInOption 0.3s ease forwards;
+    animation-delay: 0.15s;
+}
+
+@keyframes slideInOption {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
 #health-label {
 	margin-right: 0.5em;
 }
@@ -361,4 +440,152 @@ body {
 	font-size: 1.1em;
 	margin-bottom: 0.5em;
     color: #0077c8;
+}
+
+/* End Screen Styles */
+.overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100vw;
+    text-align: center;
+    padding: 2em 1em;
+    box-sizing: border-box;
+}
+
+#end-screen {
+    background: linear-gradient(135deg, #00bcd4 0%, #1565c0 100%);
+    color: #fff;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+#end-title {
+    font-size: 3em;
+    margin: 0 0 0.5em 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    animation: slideDown 0.6s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#final-score {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #ffd600;
+    margin: 0.5em 0;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+#water-protected {
+    font-size: 1.4em;
+    margin: 0.5em 0 1em 0;
+    color: #e0f7fa;
+}
+
+#edu-message {
+    font-size: 1.2em;
+    max-width: 600px;
+    margin: 1em auto 2em auto;
+    padding: 1.5em;
+    background: rgba(255,255,255,0.15);
+    border-radius: 12px;
+    border: 2px solid rgba(255,214,0,0.5);
+    line-height: 1.6;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    white-space: pre-line;
+}
+
+#play-again-btn {
+    padding: 1em 3em;
+    font-size: 1.3em;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    background: #ffd600;
+    color: #1565c0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(255,214,0,0.4);
+    margin-top: 1em;
+}
+
+#play-again-btn:hover {
+    background: #fff;
+    color: #1565c0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255,214,0,0.6);
+}
+
+#play-again-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(255,214,0,0.4);
+}
+
+.learn-more {
+    margin-top: 2em;
+    font-size: 1em;
+    color: #e0f7fa;
+    opacity: 0.9;
+}
+
+.learn-more a {
+    color: #ffd600;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.2s;
+    border-bottom: 2px solid transparent;
+}
+
+.learn-more a:hover {
+    color: #fff;
+    border-bottom-color: #ffd600;
+}
+
+/* Responsive end screen */
+@media (max-width: 600px) {
+    #end-title {
+        font-size: 2em;
+    }
+    
+    #final-score {
+        font-size: 1.4em;
+    }
+    
+    #water-protected {
+        font-size: 1.1em;
+    }
+    
+    #edu-message {
+        font-size: 1em;
+        padding: 1em;
+        max-width: 90vw;
+    }
+    
+    #play-again-btn {
+        font-size: 1.1em;
+        padding: 0.8em 2em;
+    }
 }
