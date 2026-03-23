@@ -1,4 +1,24 @@
-# Branding images
+/* Milestone Toast Overlay */
+#milestone-toast {
+    display: none;
+    position: fixed;
+    left: 50%;
+    bottom: 90px;
+    transform: translateX(-50%);
+    background: #ffd600;
+    color: #1565c0;
+    font-size: 1.25em;
+    font-family: 'Proxima Nova', 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    font-weight: bold;
+    padding: 1em 2em;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s, bottom 0.5s;
+}
+/* Branding images */
 .cw-jerrycan {
     height: 2.5em;
     width: auto;
@@ -27,12 +47,12 @@
     align-items: center;
 }
 
-# Responsive adjustments for small screens
+
 
 @media (max-width: 600px) {
         .cw-jerrycan {
             height: 2em;
-        }
+    }
         .cw-logo {
             height: 1.7em;
             margin-bottom: 0.3em;
@@ -177,7 +197,7 @@
         flex-shrink: 1;
     }
 }
-#edu-popup {
+/* Duplicate selector removed below, keep only one definition for #edu-popup */
     margin-top: 2em;
     min-height: 48px;
     max-width: 220px;
@@ -196,13 +216,71 @@
 body {
     margin: 0;
     font-family: 'Proxima Nova', 'Segoe UI', Arial, sans-serif;
-    background: #fff;
+    background: url('image.png') center center no-repeat #fff;
+    background-size: cover;
     color: #111;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    position: relative;
+}
+
+/* Large faint jerry can background for branding */
+.jerrycan-bg {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 420px;
+    height: 420px;
+    z-index: 0;
+    opacity: 0.10;
+    pointer-events: none;
+    background: url('jerrycan.png') center center no-repeat;
+    background-size: contain;
+}
+
+/* Decorative shapes for empty spaces around the game area */
+.decorative-shape {
+    position: fixed;
+    z-index: 1;
+    opacity: 0.18;
+    pointer-events: none;
+    filter: blur(1px);
+}
+.decorative-shape.top-left {
+    top: 2vw;
+    left: 2vw;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle at 40% 60%, #00bcd4 60%, #ffd600 100%);
+    border-radius: 50% 40% 60% 50%/60% 50% 40% 50%;
+}
+.decorative-shape.bottom-right {
+    bottom: 2vw;
+    right: 2vw;
+    width: 160px;
+    height: 160px;
+    background: radial-gradient(circle at 60% 40%, #ffd600 60%, #1565c0 100%);
+    border-radius: 60% 50% 40% 50%/50% 60% 50% 40%;
+}
+.decorative-shape.top-right {
+    top: 4vw;
+    right: 6vw;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle at 60% 40%, #43ea6d 60%, #00bcd4 100%);
+    border-radius: 60% 40% 60% 40%/40% 60% 40% 60%;
+}
+.decorative-shape.bottom-left {
+    bottom: 6vw;
+    left: 4vw;
+    width: 90px;
+    height: 90px;
+    background: radial-gradient(circle at 40% 60%, #e0f7fa 60%, #ffd600 100%);
+    border-radius: 50% 60% 40% 60%/60% 40% 60% 40%;
 }
 
 h1, h2, h3, #main-footer, #choose-difficulty-btn, .difficulty-option, #pause-btn, #restart-btn, #play-again-btn, .mission, #level-info, #score, #final-score, #water-protected, #edu-message, #health-label, #end-title, .learn-more, #splash-title-row, .cw-jerrycan, .cw-logo {

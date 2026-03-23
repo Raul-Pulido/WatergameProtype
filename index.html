@@ -11,6 +11,13 @@
 	<!-- If not available, system will fall back to Segoe UI or Arial. -->
 </head>
 <body>
+	<!-- Large faint jerry can background for branding -->
+	<div class="jerrycan-bg"></div>
+	<!-- Decorative shapes for extra design -->
+	<div class="decorative-shape top-left"></div>
+	<div class="decorative-shape bottom-right"></div>
+	<div class="decorative-shape top-right"></div>
+	<div class="decorative-shape bottom-left"></div>
 	<!-- Splash Screen -->
 	<div id="splash-screen" class="splash-flex">
 		<div id="splash-title-row">
@@ -19,6 +26,8 @@
 	
 	<!-- Footer -->
 	<footer id="main-footer" style="width:100vw; background:#1565c0; color:#fff; text-align:center; padding:1.2em 0 1.2em 0; position:fixed; left:0; bottom:0; z-index:100; font-size:1.1em; box-shadow:0 -2px 12px rgba(0,0,0,0.08);">
+		<!-- Milestone Toast Overlay -->
+		<div id="milestone-toast" style="display:none; position:fixed; left:50%; bottom:90px; transform:translateX(-50%); background:#ffd600; color:#1565c0; font-size:1.25em; font-weight:bold; padding:1em 2em; border-radius:16px; box-shadow:0 4px 24px rgba(0,0,0,0.13); z-index:200; opacity:0; pointer-events:none; transition:opacity 0.5s, bottom 0.5s;"></div>
 	  <span>Support clean water: </span>
 	  <a href="https://charitywater.org" target="_blank" style="color:#ffd600; font-weight:bold; text-decoration:none; margin:0 0.7em;">charity: water</a>
 	  <span>|</span>

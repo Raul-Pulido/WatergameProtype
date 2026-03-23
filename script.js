@@ -177,6 +177,54 @@ if (restartBtn) {
     };
 }
 
+
+// --- Milestone Toast Logic ---
+const milestoneToast = document.getElementById('milestone-toast');
+const milestoneMessages = [
+    'Great job! 50 points!',
+    'Amazing! 100 points!',
+    'Incredible! 150 points!',
+    'Unstoppable! 200 points!',
+    'Legendary! 250 points!',
+    'Water Hero! 300 points!',
+    'Clean Water Champion! 350 points!',
+    'Guardian of the Flow! 400 points!',
+    'Ultimate Defender! 450 points!',
+    'Water Warrior! 500 points!'
+];
+let lastMilestone = 0;
+let milestoneToastTimer = null;
+
+function showMilestoneToast(message) {
+    if (!milestoneToast) return;
+    milestoneToast.textContent = message;
+    milestoneToast.style.display = 'block';
+    milestoneToast.style.opacity = '1';
+    milestoneToast.style.bottom = '90px';
+    // Clear any previous timer
+    if (milestoneToastTimer) clearTimeout(milestoneToastTimer);
+    // Fade out after 2.2s
+    milestoneToastTimer = setTimeout(() => {
+        milestoneToast.style.opacity = '0';
+        milestoneToast.style.bottom = '60px';
+        setTimeout(() => {
+            milestoneToast.style.display = 'none';
+        }, 600);
+    }, 2200);
+}
+
+function resetMilestoneToast() {
+    lastMilestone = 0;
+    if (milestoneToast) {
+        milestoneToast.style.display = 'none';
+        milestoneToast.style.opacity = '0';
+    }
+    if (milestoneToastTimer) {
+        clearTimeout(milestoneToastTimer);
+        milestoneToastTimer = null;
+    }
+}
+
 // --- Utility Functions ---
 function randBetween(a, b) { return Math.random() * (b - a) + a; }
 function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
@@ -198,6 +246,7 @@ function showSplash() {
 let eduPopupTimer = null;
 let contaminantShots = 0;
 function startGame() {
+    resetMilestoneToast();
     // Cancel any previous animation frame to prevent multiple loops
     if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
@@ -324,6 +373,17 @@ function updateUI() {
     if (healthPct > 0.6) healthFill.style.background = '#43ea6d';
     else if (healthPct > 0.3) healthFill.style.background = '#f9e900';
     else healthFill.style.background = '#e53935';
+
+    // --- Milestone Toast Trigger ---
+    if (score > 0 && score % 50 === 0 && score !== lastMilestone) {
+        let idx = Math.floor(score / 50) - 1;
+        if (idx >= 0 && idx < milestoneMessages.length) {
+            showMilestoneToast(milestoneMessages[idx]);
+        } else {
+            showMilestoneToast('Milestone reached!');
+        }
+        lastMilestone = score;
+    }
 }
 
 // --- Object Types ---
